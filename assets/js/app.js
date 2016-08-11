@@ -12,7 +12,29 @@ $.fn.weatherapp = function(options){
             appId: '95a39919ee05fc2a69ca1b39ee81e22e',
             cityWrap: $(this),
             cityBtn: $(this).find('.weatherapp-show-weather'),
-            cityId: $(this).find('.weatherapp-show-weather').data('cityid')
+            cityId: $(this).find('.weatherapp-show-weather').data('cityid'),
+            // prints the weather on screen
+            renderWeather: function( res ){
+
+                // dom elements
+                var container = $('<div>', {
+                    'class': 'weatherapp-res-cont-' + res.name,
+                });
+
+                var parag = $('<p>', {
+                    'class': 'text-right'
+                });
+
+                var msg = '<b>Main weather</b>: ' + res.weather[0].main + ' ('+ res.weather[0].description +')';
+                msg += '<br/> <b>Temperature</b>: ' + res.main.temp;
+                msg += '<br/> <b>Wind</b>: ' + res.wind.speed;
+
+                // create dom tree
+                parag.html( msg )
+                container.append( parag );
+
+                return container;
+            }
         }, options);
 
         // shows the actual weather
@@ -31,12 +53,8 @@ $.fn.weatherapp = function(options){
                     settings.cityBtn.hide();
 
                     // show info
-                    console.log("weather[0].main", res.weather[0].main);
-                    console.log("weather[0].description", res.weather[0].description);
-                    console.log("weather[0].icon", res.weather[0].icon);
-                    console.log("main.temp", res.main.temp);
-                    console.log("wind.speed", res.wind.speed);
-                    console.log("clouds.all", res.clouds.all);
+                    var weatherDom = settings.renderWeather( res );
+                    settings.cityWrap.append( weatherDom );
                 },
                 error: function(request, errorType, errorMessage){
                     alert('Error: '+ errorType +' with: '+ errorMessage);
