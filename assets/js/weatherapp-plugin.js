@@ -13,6 +13,8 @@ $.fn.weatherapp = function(options){
             cityWrap: $(this),
             cityBtn: $(this).find('.weatherapp-show-weather'),
             cityId: $(this).find('.weatherapp-show-weather').data('cityid'),
+            cityName: $(this).find('.weatherapp-show-weather').data('cityname'),
+            searchBy: 'cityId',
             // prints the weather on screen
             renderWeather: function( res ){
 
@@ -39,7 +41,14 @@ $.fn.weatherapp = function(options){
 
         // shows the actual weather
         var showWeather = function(){
-            var apiUrl = settings.urlBase + '?' + 'appid=' + settings.appId + '&' + 'id=' + settings.cityId;
+
+            // depending on city identification base
+            var apiUrl = settings.urlBase + '?' + 'appid=' + settings.appId;
+            if (settings.searchBy === 'cityId') {
+                apiUrl += '&' + 'id=' + settings.cityId;
+            } else if (settings.searchBy === 'cityName') {
+                apiUrl += '&' + 'q=' + settings.cityName;
+            }
             console.log('apiurl: ', apiUrl);
 
             // get info ajax
