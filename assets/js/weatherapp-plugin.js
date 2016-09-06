@@ -15,6 +15,7 @@ $.fn.weatherapp = function(options){
             cityId: $(this).find('.weatherapp-show-weather').data('cityid'),
             cityName: $(this).find('.weatherapp-show-weather').data('cityname'),
             searchBy: 'cityId',
+            ev_click_vertiempo: 'click.weatherapp',
             // prints the weather on screen
             renderWeather: function( res ){
 
@@ -66,7 +67,7 @@ $.fn.weatherapp = function(options){
                     settings.cityWrap.append( weatherDom );
 
                     // detach event handler on that city button once it is clicked
-                    settings.cityWrap.off( 'click.weatherapp', showWeather );
+                    settings.cityWrap.off( settings.ev_click_vertiempo, showWeather );
                 },
                 error: function(request, errorType, errorMessage){
                     alert('Error: '+ errorType +' with: '+ errorMessage);
@@ -81,6 +82,6 @@ $.fn.weatherapp = function(options){
         };
 
         // event handlers
-        settings.cityWrap.on('click.weatherapp', settings.cityBtn, showWeather);
+        settings.cityWrap.on( settings.ev_click_vertiempo, settings.cityBtn, showWeather);
     });
 };
