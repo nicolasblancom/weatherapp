@@ -64,6 +64,9 @@ $.fn.weatherapp = function(options){
                     // show info
                     var weatherDom = settings.renderWeather( res );
                     settings.cityWrap.append( weatherDom );
+
+                    // detach event handler on that city button once it is clicked
+                    settings.cityWrap.off( 'click.weatherapp', showWeather );
                 },
                 error: function(request, errorType, errorMessage){
                     alert('Error: '+ errorType +' with: '+ errorMessage);
