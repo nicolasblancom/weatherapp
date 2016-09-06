@@ -8,7 +8,10 @@ $(document).ready(function(){
     var cityWrap = $( '.weatherapp-city-wrap' );
 
     // override default settings
-    var options = {};
+    var options = {
+        appId: '95a39919ee05fc2a69ca1b39ee81e22e',
+        searchBy: 'cityName'
+    };
 
     // call plugin on all city containers
     cityWrap.weatherapp(options);

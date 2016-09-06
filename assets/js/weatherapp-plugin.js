@@ -4,44 +4,69 @@
 
 $.fn.weatherapp = function(options){
 
+    // initial fixed values (cache values)
+    var btnShowWeatherClass = '.weatherapp-show-weather';
+
     this.each(function(){
 
-        // final settings
-        var settings = $.extend({
+        // initial not fixed values (cache values)
+        var cityBtn_ = $(this).find( btnShowWeatherClass );
+
+        // plugin default options
+        var defaults = {
+            // url to make calls
             urlBase: 'http://api.openweathermap.org/data/2.5/weather',
+
+            // appid needed to make calls to api
             appId: '95a39919ee05fc2a69ca1b39ee81e22e',
+
+            // div containing the city and the needed structure inside it
             cityWrap: $(this),
-            cityBtn: $(this).find('.weatherapp-show-weather'),
-            cityId: $(this).find('.weatherapp-show-weather').data('cityid'),
-            cityName: $(this).find('.weatherapp-show-weather').data('cityname'),
+
+            // button to be clicked inside the div that contains all the city info
+            cityBtn: cityBtn_,
+
+            // city id on openweather
+            cityId: cityBtn_.data('cityid'),
+
+            // city name on openweather
+            cityName: cityBtn_.data('cityname'),
+
+            // search by city id ('cityId') or by city name ('cityName')
             searchBy: 'cityId',
-            ev_click_vertiempo: 'click.weatherapp',
-            // prints the weather on screen
-            renderWeather: function( res ){
 
-                // dom elements
-                var container = $('<div>', {
-                    'class': 'weatherapp-res-cont-' + res.name,
-                });
+            // event to listen when clicked button to see the weather inside a city wrap
+            ev_click_vertiempo: 'click.weatherapp'
+        };
 
-                var parag = $('<p>', {
-                    'class': 'text-right'
-                });
+        // final settings
+        var settings = $.extend( defaults, options);
 
-                var msg = '<b>Main weather</b>: ' + res.weather[0].main + ' ('+ res.weather[0].description +')';
-                msg += '<br/> <b>Temperature</b>: ' + res.main.temp;
-                msg += '<br/> <b>Wind</b>: ' + res.wind.speed;
+        // prints the weather on screen, private
+        settings.renderWeather = function( res ){
 
-                // create dom tree
-                parag.html( msg )
-                container.append( parag );
+            // dom elements
+            var container = $('<div>', {
+                'class': 'weatherapp-res-cont-' + res.name,
+            });
 
-                return container;
-            }
-        }, options);
+            var parag = $('<p>', {
+                'class': 'text-right'
+            });
+
+            var msg = '<b>Main weather</b>: ' + res.weather[0].main + ' ('+ res.weather[0].description +')';
+            msg += '<br/> <b>Temperature</b>: ' + res.main.temp;
+            msg += '<br/> <b>Wind</b>: ' + res.wind.speed;
+
+            // create dom tree
+            parag.html( msg )
+            container.append( parag );
+
+            return container;
+        };
 
         // shows the actual weather
-        var showWeather = function(){
+        settings.showWeather = function(){
 
             // depending on city identification base
             var apiUrl = settings.urlBase + '?' + 'appid=' + settings.appId;
@@ -50,9 +75,13 @@ $.fn.weatherapp = function(options){
             } else if (settings.searchBy === 'cityName') {
                 apiUrl += '&' + 'q=' + settings.cityName;
             }
-            console.log('apiurl: ', apiUrl);
 
             // get info ajax
+            getInfoPrint( apiUrl );
+        };
+
+        // makes ajax call and prints info
+        var getInfoPrint = function( apiUrl ){
             $.ajax({
                 url : apiUrl,
                 method: "GET",
@@ -67,7 +96,7 @@ $.fn.weatherapp = function(options){
                     settings.cityWrap.append( weatherDom );
 
                     // detach event handler on that city button once it is clicked
-                    settings.cityWrap.off( settings.ev_click_vertiempo, showWeather );
+                    settings.cityWrap.off( settings.ev_click_vertiempo, settings.showWeather );
                 },
                 error: function(request, errorType, errorMessage){
                     alert('Error: '+ errorType +' with: '+ errorMessage);
@@ -82,6 +111,6 @@ $.fn.weatherapp = function(options){
         };
 
         // event handlers
-        settings.cityWrap.on( settings.ev_click_vertiempo, settings.cityBtn, showWeather);
+        settings.cityWrap.on( settings.ev_click_vertiempo, settings.cityBtn, settings.showWeather);
     });
 };
