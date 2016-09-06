@@ -39,12 +39,8 @@ $.fn.weatherapp = function(options){
             ev_click_vertiempo: 'click.weatherapp'
         };
 
-        // final settings
-        var settings = $.extend( defaults, options);
-
-        // prints the weather on screen, private
-        settings.renderWeather = function( res ){
-
+        // creates DOM elements with ajax response, public
+        defaults.renderWeatherCreateDOM = function( res ){
             // dom elements
             var container = $('<div>', {
                 'class': 'weatherapp-res-cont-' + res.name,
@@ -65,7 +61,18 @@ $.fn.weatherapp = function(options){
             return container;
         };
 
-        // shows the actual weather
+        // final settings
+        var settings = $.extend( defaults, options);
+
+        // prints the weather on screen, private
+        settings.renderWeather = function( res ){
+
+            var container = settings.renderWeatherCreateDOM( res );
+
+            return container;
+        };
+
+        // shows the actual weather, private
         settings.showWeather = function(){
 
             // depending on city identification base
@@ -77,11 +84,11 @@ $.fn.weatherapp = function(options){
             }
 
             // get info ajax
-            getInfoPrint( apiUrl );
+            settings.getInfoPrint( apiUrl );
         };
 
-        // makes ajax call and prints info
-        var getInfoPrint = function( apiUrl ){
+        // makes ajax call and prints info, private
+        settings.getInfoPrint = function( apiUrl ){
             $.ajax({
                 url : apiUrl,
                 method: "GET",
