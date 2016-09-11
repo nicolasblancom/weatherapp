@@ -21,9 +21,10 @@ $(document).ready(function(){
                 'class': 'text-right'
             });
 
-            var msg = '<b>Main weather</b>: ' + res.weather[0].main + ' ('+ res.weather[0].description +')';
-            msg += '<br/> <b>Temperature</b>: ' + res.main.temp;
-            msg += '<br/> <b>Wind</b>: ' + res.wind.speed;
+            var msg = '';
+            msg += '<b class="text-info">' + res.weather[0].description + '</b><br/>';
+            msg += '<span>' + res.main.temp + ' (ºC)</span> - ';
+            msg += '<span>' + res.wind.speed + ' (m/s)</span>';
 
             // create dom tree
             parag.html( msg )
