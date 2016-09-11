@@ -20,6 +20,9 @@ $.fn.weatherapp = function(options){
             // appid needed to make calls to api
             appId: '95a39919ee05fc2a69ca1b39ee81e22e',
 
+            // temperature units
+            units: 'units=metric',
+
             // div containing the city and the needed structure inside it
             cityWrap: $(this),
 
@@ -51,8 +54,8 @@ $.fn.weatherapp = function(options){
             });
 
             var msg = '<b>Main weather</b>: ' + res.weather[0].main + ' ('+ res.weather[0].description +')';
-            msg += '<br/> <b>Temperature</b>: ' + res.main.temp;
-            msg += '<br/> <b>Wind</b>: ' + res.wind.speed;
+            msg += '<br/> <b>Temperature</b>: ' + res.main.temp + ' ºC';
+            msg += '<br/> <b>Wind</b>: ' + res.wind.speed + ' m/s';
 
             // create dom tree
             parag.html( msg )
@@ -77,6 +80,8 @@ $.fn.weatherapp = function(options){
 
             // depending on city identification base
             var apiUrl = settings.urlBase + '?' + 'appid=' + settings.appId;
+            apiUrl += '&' + settings.units;
+
             if (settings.searchBy === 'cityId') {
                 apiUrl += '&' + 'id=' + settings.cityId;
             } else if (settings.searchBy === 'cityName') {
