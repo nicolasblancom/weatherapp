@@ -1,12 +1,17 @@
 /**
  * WeatherApp Plugin - a jquery plugin
+ *
+ * Plugin code, there is no need to modify anything here if you want default behaviour.
+ *
  */
 
+// create weatherapp function inside jQuery
 $.fn.weatherapp = function(options){
 
     // initial fixed values (cache values)
     var btnShowWeatherClass = '.weatherapp-show-weather';
 
+    // iterate each of the objetcs on which the function is being called
     this.each(function(){
 
         // initial not fixed values (cache values)
@@ -18,12 +23,12 @@ $.fn.weatherapp = function(options){
             urlBase: 'http://api.openweathermap.org/data/2.5/weather',
 
             // appid needed to make calls to api
-            appId: '95a39919ee05fc2a69ca1b39ee81e22e',
+            appId: '',
 
-            // temperature units
+            // units
             units: 'units=metric',
 
-            // div containing the city and the needed structure inside it
+            // DOM element containing the city and the needed structure inside it
             cityWrap: $(this),
 
             // button to be clicked inside the div that contains all the city info
@@ -64,18 +69,10 @@ $.fn.weatherapp = function(options){
             return container;
         };
 
-        // final settings
+        // final settings, combine arrays
         var settings = $.extend( defaults, options);
 
-        // prints the weather on screen, private
-        settings.renderWeather = function( res ){
-
-            var container = settings.renderWeatherCreateDOM( res );
-
-            return container;
-        };
-
-        // shows the actual weather, private
+        // main function: shows the actual weather, private
         settings.showWeather = function(){
 
             // depending on city identification base
@@ -104,7 +101,7 @@ $.fn.weatherapp = function(options){
                     settings.cityBtn.hide();
 
                     // show info
-                    var weatherDom = settings.renderWeather( res );
+                    var weatherDom = settings.renderWeatherCreateDOM( res )
                     settings.cityWrap.append( weatherDom );
 
                     // detach event handler on that city button once it is clicked

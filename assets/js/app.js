@@ -1,5 +1,11 @@
 /**
  * App entry point
+ *
+ * Usage:
+ * - Choose a css class name for the city wrapper in your html. In this example the css class is '.weather-city-wrap'
+ * - Provide required plugin option 'appId', and optional plugin options 'searchBy' and 'renderWeatherCreateDOM'
+ * - Call weatherapp() function on your city wrapper element and pass your overriden options to it as argument
+ * 
  */
 
 $(document).ready(function(){
