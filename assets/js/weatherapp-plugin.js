@@ -111,13 +111,14 @@ $.fn.weatherapp = function(options){
                     settings.cityWrap.off( settings.ev_click_vertiempo, settings.showWeather );
                 },
                 error: function(request, errorType, errorMessage){
-                    alert('Error: '+ errorType +' with: '+ errorMessage);
+                    settings.cityWrap.find('.error').remove();
+                    settings.cityWrap.append('<span class="error">error...</span>');
                 },
                 beforeSend: function(){
-                    console.log('--- before...');
+                    settings.cityBtn.text('...searching');
                 },
                 complete: function(){
-                    console.log('+++ complete...');
+                    settings.cityBtn.text('get the weather');
                 }
             });
         };
